@@ -1,6 +1,7 @@
 <?php
 class DB extends PDO {
-    private $dsn = 'mysql:host=localhost;dbname=wa4e-js-profiles';
+    #cambié el nombre a js_profiles porque me daba errores...
+    private $dsn = 'mysql:host=localhost;dbname=js_profiles';
     private $username = 'root';
     private $password;
     #private $dbname = 'wa4e-js-profiles';
@@ -16,7 +17,7 @@ class DB extends PDO {
                 \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC
             ];
             $this->conn = new \PDO($this->dsn, $this->username, $this->password, $this->options);
-            echo "Connected successfully";
+            #echo "Connected successfully";
         } 
         catch (PDOException $e) {
             throw new \PDOException($e->getMessage(), (int)$e->getCode());

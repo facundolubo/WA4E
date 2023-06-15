@@ -30,10 +30,6 @@ if (isset($_SESSION['user_id'])) {
         echo '<li>' . $link . '</li>';
     }
 
-} else {
-
-    // The user is not logged in, so display a link to login
-    echo '<a href="login.php">Login</a>';
 }
 
 ?>

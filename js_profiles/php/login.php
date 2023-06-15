@@ -6,29 +6,38 @@ In this assignment, you will need to store the user's hashed password in the use
 
 Since the email address and salted hash are stored in the database, we must use a different approach than in the previous assignment to check to see if the email and password match using the following approach:
 */
-require './DB.php';
 
-$check = hash('md5', $salt.$_POST['pass']);
-$stmt = $pdo->prepare('SELECT user_id, name FROM users
-    WHERE email = :em AND password = :pw');
-$stmt->execute(array( ':em' => $_POST['email'], ':pw' => $check));
-$row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-/*
-Since we are checking if the stored hashed password matches the hash computation of the user-provided password, 
-If we get a row, then the password matches, if we don't get a row (i.e. $row is false) then the password did not match. 
-If he password matches, put the user_id value for the user's row into session as well as the user's name:
-*/
-if ( $row !== false ) {
-    $_SESSION['name'] = $row['name'];
-    $_SESSION['user_id'] = $row['user_id'];
-    // Redirect the browser to index.php
-    header("Location: index.php");
-    return;
-
-/*
-Make sure to redirect back to login.php with an error message when there is no row selected.
-*/
+if (isset($_POST['email']) && isset($_POST['pass'])) { 
+    require './DB.php';
+    $salt = 'XyZzy12*_';
+    $db = new DB();
+    $pdo = $db->getPDO();
+    
+    $check = hash('md5', $salt.$_POST['pass']);
+    $stmt = $pdo->prepare('SELECT user_id, name FROM users
+        WHERE email = :em AND password = :pw');
+    $stmt->execute(array( ':em' => $_POST['email'], ':pw' => $check));
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    /*
+    Since we are checking if the stored hashed password matches the hash computation of the user-provided password, 
+    If we get a row, then the password matches, if we don't get a row (i.e. $row is false) then the password did not match. 
+    If he password matches, put the user_id value for the user's row into session as well as the user's name:
+        /*
+        Make sure to redirect back to login.php with an error message when there is no row selected.
+    */
+    if ( $row !== false ) {
+        $_SESSION['name'] = $row['name'];
+        $_SESSION['user_id'] = $row['user_id'];
+        // Redirect the browser to index.php
+        header("Location: index.php");
+    }
+    else {
+        // Redirect the browser to login.php with an error message
+        $_SESSION['message'] = 'Invalid email or password';
+        echo $_SESSION['message'];
+        unset($_SESSION['message']);
+        }
+}
 ?>
 
 <!DOCTYPE html>
@@ -75,16 +84,16 @@ Make sure to redirect back to login.php with an error message when there is no r
             if (addr == null || addr == "" || pw == null || pw == "") {
                 alert("Both fields must be filled out");
                 return false;
-            }
+                }
             if (addr.indexOf('@') == -1 ) {
                 alert("Invalid email address");
                 return false;
-            }
+                }
             return true;
-        } 
+        }
         catch(e) {
             return false
-        }
+        }    
         return false;
     }
     </script>

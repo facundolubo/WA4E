@@ -11,7 +11,7 @@ $pdo = $db->getPDO();
 $stmt = $pdo->prepare('SELECT * FROM Profile WHERE user_id = :uid');
 $stmt->execute(array(
     ':uid' => $_GET['profile_id']
-))
+));
 
 #view.php
 // Check if user is logged in
