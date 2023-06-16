@@ -6,7 +6,7 @@ In this assignment, you will need to store the user's hashed password in the use
 
 Since the email address and salted hash are stored in the database, we must use a different approach than in the previous assignment to check to see if the email and password match using the following approach:
 */
-
+session_start();
 if (isset($_POST['email']) && isset($_POST['pass'])) { 
     require './DB.php';
     $salt = 'XyZzy12*_';
@@ -18,6 +18,7 @@ if (isset($_POST['email']) && isset($_POST['pass'])) {
         WHERE email = :em AND password = :pw');
     $stmt->execute(array( ':em' => $_POST['email'], ':pw' => $check));
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    print($row);
     /*
     Since we are checking if the stored hashed password matches the hash computation of the user-provided password, 
     If we get a row, then the password matches, if we don't get a row (i.e. $row is false) then the password did not match. 
@@ -65,15 +66,8 @@ if (isset($_POST['email']) && isset($_POST['pass'])) {
         <input type="submit" onclick="return doValidate();" value="Log In">
         <input type="submit" name="cancel" value="Cancel">
     </form>
-    <p>
-    For a password hint, view source and find an account and password hint
-    in the HTML comments.
-    <!-- Hint: 
-    The account is umsi@umich.edu
-    The password is the three character name of the 
-    programming language used in this class (all lower case) 
-    followed by 123. -->
-    </p>
+    <br>
+
     <script>
     function doValidate() {
         console.log('Validating...');

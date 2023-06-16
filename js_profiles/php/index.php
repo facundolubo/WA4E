@@ -6,30 +6,37 @@ add a new resume and links to delete or edit any resumes that are owned by the l
 */
 // BARD:
 
+// Get all profiles
+session_start();
+require 'DB.php';
+$db = new DB();
+$pdo = $db->getPDO();
+$stmt = $pdo->prepare('SELECT * FROM Profile');
+$stmt->execute();
+$profiles = $stmt->fetchAll();
+#echo "Printing the session array: \n "; print_r($_SESSION);
+$profiles_table = array();
+// Loop through the profiles and create a list
+foreach ($profiles as $profile) {
+    // Create a link to the detailed view
+    $tdName = '<a href="view.php?id=' . $profile['profile_id'] . '">' . $profile['first_name'] . 
+        ' ' . $profile['last_name'] . '</a>';
+    // Check if the user is the owner of the profile
+    // Output the profile
+    $tdName = '<td>' . $tdName . '</td>';
+    $tdHeadline = '<td>' . $profile['headline'] . '</td>';
+    if ((isset($_SESSION['user_id']) && ($profile['user_id'] == $_SESSION['user_id']) && !isset($tdAction))) {
+        // Add links to delete and edit the profile
+        $tdAction = '<td> <a href="delete.php?id=' . $profile['profile_id'] . '"> Delete </a> | <a href="edit.php?id=' .
+            $profile['profile_id'] . '"> Edit </a>' . '</td>';
+        array_push($profiles_table, [$tdName, $tdHeadline, $tdAction]);
+    }
+    else array_push($profiles_table, [$tdName, $tdHeadline]);
+}
 
 // Check if the user is logged in
 if (isset($_SESSION['user_id'])) {
-
-    // Get all profiles
-    $profiles = get_profiles();
-
-    // Loop through the profiles and create a list
-    foreach ($profiles as $profile) {
-
-        // Create a link to the detailed view
-        $link = '<a href="view.php?id=' . $profile['id'] . '">View</a>';
-
-        // Check if the user is the owner of the profile
-        if ($profile['user_id'] == $_SESSION['user_id']) {
-
-            // Add links to delete and edit the profile
-            $link .= ' | <a href="delete.php?id=' . $profile['id'] . '">Delete</a> | <a href="edit.php?id=' . $profile['id'] . '">Edit</a>';
-        }
-
-        // Output the profile
-        echo '<li>' . $link . '</li>';
-    }
-
+    $addLink = '<a href="add.php"> Add new entry </a>';
 }
 
 ?>
@@ -56,16 +63,22 @@ if (isset($_SESSION['user_id'])) {
 <body>
 <div class="container">
 <h1> Facundo Lubo's Resume Registry</h1>
-<p><a href="login.php">Please log in</a></p>
+<button type="button" onclick="window.location='login.php'">Login</button>
+<button type="button" onclick="window.location='logout.php'">Logout</button>
 <table border="1">
-    <tr><th>Name</th><th>Headline</th><tr>
-    <tr><td>
-    <a href="view.php?profile_id=16467">DSADASDAS DSADASDAS</a></td><td>DASDA</td></tr>
+    <tr>
+        <th>Name</th>
+        <th>Headline</th>
+        <th>Action</th>
+    </tr>
+    <?php 
+        foreach ($profiles_table as $td) {
+            echo "<tr>" . implode("", $td) . "</tr>";
+        }
+    ?>
 </table>
 <p>
-<b>Note:</b> Your implementation should retain data across multiple
-logout/login sessions.  This sample implementation clears all its
-data periodically - which you should not do in your implementation.
+    <?php if(isset($addLink)) echo $addLink; ?>
 </p>
 </div>
 </body>

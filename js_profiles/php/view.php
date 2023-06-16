@@ -2,6 +2,7 @@
 #view.php show the detail for a particular entry. 
 #This works even is the user is not logged in. (read)
 
+session_start();
 echo "Printing the array";
 print_r($_GET);
 

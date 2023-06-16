@@ -13,7 +13,6 @@ CREATE TABLE users (
     INDEX(email)
 ) ENGINE=InnoDB CHARSET=utf8;
 
-
 CREATE TABLE Profile (
   profile_id INTEGER NOT NULL AUTO_INCREMENT,
   user_id INTEGER NOT NULL,
