@@ -1,5 +1,6 @@
 <?php 
 include_once('conn.php');
+session_start();
 //if cancel, then go to index.php
 if (isset($_POST['cancel'])) {
     header("Location: index.php");
@@ -47,8 +48,9 @@ if (isset($_POST['username']) && (isset($_POST['pass1'])) && (isset($_POST['pass
                 ':username' => $_POST['username'],
                 ':password' => $result
             ));
-            $msg = "Successfully registered" . "<br/>Username: " . $_POST['username'] . " password: " . $_POST['pass1']
-                . "<br/> Hashed password: " . $result;
+            $_SESSION['new_user'] = $_POST['username'];
+            $_SESSION['msg'] = "Successfully registered" . "<br/> Username: " . $_POST['username'] . "<br/> Email: " . $_POST['username'] . "<br/>" . " password: " . $_POST['pass1'] . "<br/> Hashed password: " . $result;
+            header("Location: index.php");
         }
         catch (PDOException $e) {
             //in case the user already exists
