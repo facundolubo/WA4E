@@ -24,19 +24,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		$stmt->bindParam(':username', $username);
 		$stmt->execute();
 		$result = $stmt->fetch(PDO::FETCH_ASSOC);
-		if (isset($result['username']) && password_verify($password, $result['password']) ) {
-			$_SESSION['username'] = $username;
-			header("Location: autos.php?name=".urlencode($username));
-			return;
+		if (empty($result['username'])) {
+			$error = "Inexisting username";
+		}
+		else if (!password_verify($password, $result['password'])) {
+			$error = "Invalid password";
 		}
 		else {
-			$error = "Invalid username or password";
+			$_SESSION['username'] = $username;
+            header("Location: autos.php?name=".urlencode($_POST['who']));
 		}
 	}
 		catch (PDOException $e) {
 		//in case the password is incorrect or the username does not exist
 		if ($e->getCode() == 23000) {
-			$error = "Invalid username or password";
+			$error = "Some error occurred";
 		}
 		/* for debugging */
 		echo "Error: " . $e->getMessage();

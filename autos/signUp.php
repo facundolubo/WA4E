@@ -7,14 +7,38 @@ if (isset($_POST['cancel'])) {
 }
 //Create user and store it in the database with a hashed password
 if (isset($_POST['username']) && (isset($_POST['pass1'])) && (isset($_POST['pass2']))) {
-    // Validation
-    if (strlen($_POST['username']) < 6 || strlen($_POST['username']) > 16 || !preg_match("/^[a-zA-Z0-9]+$/", $_POST['username'])) {
-        $msg = "Your username must be between 6 and 16 characters and contain only letters and numbers";
+    // Validation: extension and check valid email with an '@'. Only allows "_" and "." as special characters
+    if (strlen($_POST['username']) < 8 || strlen($_POST['username']) > 32) {
+        $msg = "Your username must be an email with an extension between 8 and 32 characters";
         /*header("Location: signIn.php");*/
+    }
+    else if (!preg_match("/^[a-zA-Z0-9@_.]+$/", $_POST['username'])) {
+        $msg = "Invalid email characters";
+    }
+    else if (!str_contains($_POST['username'], "@")) {
+        $msg = "Email must have an at-sign (@)";
     }
     else if ($_POST['pass1'] != $_POST['pass2']) {
         $msg = "Passwords do not match";
     }
+    // pass length
+    else if (strlen($_POST['pass1']) < 8 || strlen($_POST['pass1']) > 32) {
+        $msg = "Your password must be between 8 and 32 characters";
+    }
+    //Your password must be between 8 and 32 characters and contain at least one number and one uppercase and lowercase letter
+    else if (!preg_match('/[0-9]/', $_POST['pass1'])) {
+        $msg = "You need a password with at least one number";
+        $msg .= "<br/> You tried this password: " . $_POST['pass1'];
+    }
+    else if (!preg_match('/[A-Z]/', $_POST['pass1'])) {
+        $msg = "You need a password with at least one uppercase letter";
+        $msg .= "<br/> You tried this password: " . $_POST['pass1'];
+    }
+    else if (!preg_match('/[a-z]/', $_POST['pass1'])) {
+        $msg = "You need a password with at least one lowercase letter";
+        $msg .= "<br/> You tried this password: " . $_POST['pass1'];
+    }
+        
     else {
         try {
             $result = password_hash($_POST['pass1'], PASSWORD_DEFAULT);

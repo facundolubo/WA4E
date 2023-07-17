@@ -2,7 +2,6 @@
 session_start();
 include_once('header.php');
 ?>
-
 <body>
 <main>
 <div class="container">

@@ -16,3 +16,7 @@ if (!isset($_GET['name'])) {
     );
 ...
 */
+?>
+
+</body>
+</html>
