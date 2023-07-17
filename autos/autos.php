@@ -1,5 +1,5 @@
 <?php
-if (!isset($_GET['user'])) {
+if (!isset($_GET['name'])) {
 	die("Name parameter missing");
 }
 /*If the Logout button is pressed the user should be redirected back to the index.php page using:*/

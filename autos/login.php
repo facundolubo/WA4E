@@ -17,47 +17,57 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		$error = "Please enter both username and password";
 	}
 	else {
+		try {
 		// Prepare a select statement
-
-		$query = "SELECT password FROM users WHERE username = :username";
+		$query = "SELECT * FROM users WHERE username = :username";
 		$stmt = $pdo->prepare($query);
 		$stmt->bindParam(':username', $username);
 		$stmt->execute();
 		$result = $stmt->fetch(PDO::FETCH_ASSOC);
-	
-		$check = hash('md5', $salt.$_POST['pass']);
-		if ( $check == $stored_hash ) {
-			// Redirect the browser to game.php
-			header("Location: game.php?name=".urlencode($_POST['who']));
+		if (isset($result['username']) && password_verify($password, $result['password']) ) {
+			$_SESSION['username'] = $username;
+			header("Location: autos.php?name=".urlencode($username));
 			return;
-		} else {
-			$failure = "Incorrect password";
 		}
-		}
-		if ($result) {
-			$hashedPasswordFromDatabase = $result['password'];
-		} 
 		else {
-			// The username does not exist in the database
-			$error = "Invalid username";
+			$error = "Invalid username or password";
 		}
 	}
-
+		catch (PDOException $e) {
+		//in case the password is incorrect or the username does not exist
+		if ($e->getCode() == 23000) {
+			$error = "Invalid username or password";
+		}
+		/* for debugging */
+		echo "Error: " . $e->getMessage();
+	}
+	}
+}
 ?>
 <!-- VIEW-->
 <!DOCTYPE html>
 <html>
 <head>
 <title> Facundo Lubo's Login Page</title>
+<style>
+.error {
+	color: red;
+}
+</style>
 </head>
 <body>
 <div class="container">
 <h1>Please Log In</h1>
+<?php
+if (isset($error)) {
+	echo "<p class='error'>" . $error . "</p>";
+}
+?>
 <form method="POST">
-<label for="nam">User Name</label>
-<input type="text" name="who" id="nam"><br/>
-<label for="id_1723">Password</label>
-<input type="text" name="pass" id="id_1723"><br/>
+<label for="name">User Name</label>
+<input type="text" name="who" id="name"><br/>
+<label for="pass">Password</label>
+<input type="text" name="pass" id="pass"><br/>
 <input type="submit" value="Log In">
 <input type="submit" name="cancel" value="Cancel">
 </form>
