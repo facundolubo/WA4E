@@ -1,7 +1,6 @@
 <?php
 session_start();
 include_once('conn.php');
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	if ( isset($_POST['cancel'] ) ) {
 		// Redirect the browser to game.php
@@ -16,6 +15,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		// Display an error message or redirect back to the login page
 		$error = "Please enter both username and password";
 	}
+	else if (!str_contains($username , "@")) {
+		$error = "Invalid email characters (without @)";
+	}
 	else {
 		try {
 		// Prepare a select statement
@@ -28,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			$error = "Inexisting username";
 		}
 		else if (!password_verify($password, $result['password'])) {
-			$error = "Invalid password";
+			$error = "Incorrect password";
 		}
 		else {
 			$_SESSION['username'] = $username;
@@ -83,3 +85,4 @@ followed by 123. -->
 </div>
 </body>
 </html>
+>>>>>>> b00ed53dd47b97e15f6b39cf1a4e0e9141f8c62d
