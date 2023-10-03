@@ -19,11 +19,11 @@ and the /etc/php/8.1/cli/php.ini file:
 and then I've reload it with: systemctl restart php8.1-fpm.service 
 
 */
-$pass = file_get_contents('/home/facundol/Documents/Computacion/mysql/mysql_dumb_passwords');
-echo $pass;
 session_start();
+$pass = file_get_contents('../sql/mysql_dumb_passwords');
+
 require 'DB.php';
-$db = new DB();
+$db = new DB($pass);
 $pdo = $db->getPDO();
 $stmt = $pdo->prepare('SELECT * FROM Profile');
 $stmt->execute();
