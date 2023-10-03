@@ -1,8 +1,26 @@
 DROP DATABASE IF EXISTS js_profiles;
 CREATE DATABASE js_profiles DEFAULT CHARACTER SET utf8 ;
 USE js_profiles;
-GRANT ALL ON js_profiles.* TO 'fred'@'localhost' IDENTIFIED BY 'zap';
-GRANT ALL ON js_profiles.* TO 'fred'@'127.0.0.1' IDENTIFIED BY 'zap';
+drop user if exists 'fred'@'localhost';
+drop user if exists 'fred'@'127.0.0.1';
+drop user if exists 'facundol'@'localhost';
+drop user if exists 'facundol'@'127.0.0.1';
+drop user if exists 'root'@'localhost';
+drop user if exists 'root'@'127.0.0.1';
+
+CREATE USER 'fred'@'localhost' IDENTIFIED BY 'Skullproz0!';
+CREATE USER 'fred'@'127.0.0.1' IDENTIFIED BY 'Skullproz0!';
+CREATE USER 'facundol'@'localhost' IDENTIFIED BY 'Skullproz0!';
+CREATE USER 'facundol'@'127.0.0.1' IDENTIFIED BY 'Skullproz0!';
+CREATE USER 'root'@'localhost' IDENTIFIED BY 'Skullproz0!';
+CREATE USER 'root'@'127.0.0.1' IDENTIFIED BY 'Skullproz0!';
+
+GRANT ALL ON js_profiles.* TO 'fred'@'localhost';
+GRANT ALL ON js_profiles.* TO 'fred'@'127.0.0.1';
+GRANT ALL ON js_profiles.* TO 'facundol'@'localhost';
+GRANT ALL ON js_profiles.* TO 'facundol'@'127.0.0.1';
+GRANT ALL ON js_profiles.* TO 'root'@'localhost';
+GRANT ALL ON js_profiles.* TO 'root'@'127.0.0.1';
 
 CREATE TABLE users (
     user_id INTEGER NOT NULL AUTO_INCREMENT,
