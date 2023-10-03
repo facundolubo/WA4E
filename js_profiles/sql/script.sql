@@ -1,8 +1,21 @@
 DROP DATABASE IF EXISTS js_profiles;
 CREATE DATABASE js_profiles DEFAULT CHARACTER SET utf8 ;
 USE js_profiles;
-GRANT ALL ON js_profiles.* TO 'fred'@'localhost' IDENTIFIED BY 'zap';
-GRANT ALL ON js_profiles.* TO 'fred'@'127.0.0.1' IDENTIFIED BY 'zap';
+/* dropeo toda la base de datos de usuarios de mysql */
+DROP USER IF EXISTS 'facundol'@'localhost';
+DROP USER IF EXISTS 'facundol'@'127.0.0.1';
+DROP USER IF EXISTS 'fred'@'localhost';
+DROP USER IF EXISTS 'fred'@'127.0.0.1';
+DROP USER IF EXISTS 'root'@'localhost';
+DROP USER IF EXISTS 'root'@'127.0.0.1';
+FLUSH PRIVILEGES;
+CREATE USER 'facundol'@'localhost' IDENTIFIED BY 'Skullproz0!';
+CREATE USER 'facundol'@'127.0.0.1' IDENTIFIED BY 'Skullproz0!';
+CREATE USER 'fred'@'localhost' IDENTIFIED BY 'Skullproz0!';
+CREATE USER 'fred'@'127.0.0.1' IDENTIFIED BY 'Skullproz0!';
+CREATE USER 'root'@'localhost' IDENTIFIED BY 'Skullproz0!';
+CREATE USER 'root'@'127.0.0.1' IDENTIFIED BY 'Skullproz0!';
+FLUSH PRIVILEGES;
 
 CREATE TABLE users (
     user_id INTEGER NOT NULL AUTO_INCREMENT,
@@ -34,3 +47,12 @@ INSERT INTO users (name,email,password)
     VALUES ('Chuck','csev@umich.edu','1a52e17fa899cf40fb04cfc42e6352f1');
 INSERT INTO users (name,email,password)
     VALUES ('UMSI','umsi@umich.edu','1a52e17fa899cf40fb04cfc42e6352f1');
+INSERT INTO users (name,email,password)
+    VALUES ('facundol','facundolubo@gmail.com','4232');
+
+GRANT ALL ON js_profiles.* TO 'facundol'@'localhost';
+GRANT ALL ON js_profiles.* TO 'facundol'@'127.0.0.1';
+GRANT ALL ON js_profiles.* TO 'fred'@'localhost';
+GRANT ALL ON js_profiles.* TO 'fred'@'127.0.0.1';
+GRANT ALL ON js_profiles.* TO 'root'@'localhost'; 
+GRANT ALL ON js_profiles.* TO 'root'@'127.0.0.1';

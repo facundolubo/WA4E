@@ -2,13 +2,13 @@
 class DB extends PDO {
     #cambié el nombre a js_profiles porque me daba errores...
     private $dsn = 'mysql:host=localhost;dbname=js_profiles';
-    private $username = 'root';
-    private $password;
-    #private $dbname = 'wa4e-js-profiles';
+    private $username = 'fred';
+    private $password = file_get_contents('/home/facundol/Documents/Computacion/mysql/mysql_dumb_passwords');
+    #private $dbname = 'js_profiles';
     #private $host = 'localhost';
     private $options;
     private $conn;
-
+    
     public function __construct()
     {
         try {
@@ -20,6 +20,7 @@ class DB extends PDO {
             #echo "Connected successfully";
         } 
         catch (PDOException $e) {
+            echo("password: " . $this->password);
             throw new \PDOException($e->getMessage(), (int)$e->getCode());
         }
     }

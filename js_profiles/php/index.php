@@ -4,9 +4,23 @@ with view.php whether or not you are logged in. If you are not logged in, you wi
 If you are logged in you will see a link to add.php 
 add a new resume and links to delete or edit any resumes that are owned by the logged in user.
 */
-// BARD:
 
-// Get all profiles
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
+//error_reporting(E_ALL); 
+
+/*
+
+I've replaced those 3 lines above for 2 modifications in the /etc/php/8.1/fpm/php.ini
+and the /etc/php/8.1/cli/php.ini file:
+    display_errors On
+    display_startup_errors On
+
+and then I've reload it with: systemctl restart php8.1-fpm.service 
+
+*/
+$pass = file_get_contents('/home/facundol/Documents/Computacion/mysql/mysql_dumb_passwords');
+echo $pass;
 session_start();
 require 'DB.php';
 $db = new DB();
