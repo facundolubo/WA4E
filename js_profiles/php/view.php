@@ -7,7 +7,7 @@ echo "Printing the array";
 print_r($_GET);
 
 require './DB.php';
-$db = new DB();
+$db = new DB($_SESSION['pass']);
 $pdo = $db->getPDO();
 $stmt = $pdo->prepare('SELECT * FROM Profile WHERE user_id = :uid');
 $stmt->execute(array(

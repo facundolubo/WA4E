@@ -20,10 +20,12 @@ and then I've reload it with: systemctl restart php8.1-fpm.service
 
 */
 session_start();
-$pass = file_get_contents('../sql/mysql_dumb_passwords');
-
+$_SESSION['pass'] = file_get_contents('../sql/mysql_dumb_passwords');
+if (isset($_SESSION['name'])) {
+    echo 'Welcome, ' . $_SESSION['name'] . '! <br />';
+}
 require 'DB.php';
-$db = new DB($pass);
+$db = new DB($_SESSION['pass']);
 $pdo = $db->getPDO();
 $stmt = $pdo->prepare('SELECT * FROM Profile');
 $stmt->execute();
@@ -33,15 +35,15 @@ $profiles_table = array();
 // Loop through the profiles and create a list
 foreach ($profiles as $profile) {
     // Create a link to the detailed view
-    $tdName = '<a href="view.php?id=' . $profile['profile_id'] . '">' . $profile['first_name'] . 
+    $tdName = '<a href="view.php?profile_id=' . $profile['profile_id'] . '">' . $profile['first_name'] . 
         ' ' . $profile['last_name'] . '</a>';
     // Check if the user is the owner of the profile
     // Output the profile
     $tdName = '<td>' . $tdName . '</td>';
     $tdHeadline = '<td>' . $profile['headline'] . '</td>';
-    if ((isset($_SESSION['user_id']) && ($profile['user_id'] == $_SESSION['user_id']) && !isset($tdAction))) {
+    if ((isset($_SESSION['user_id']) && ($profile['user_id'] == $_SESSION['user_id']))) {
         // Add links to delete and edit the profile
-        $tdAction = '<td> <a href="delete.php?id=' . $profile['profile_id'] . '"> Delete </a> | <a href="edit.php?id=' .
+        $tdAction = '<td> <a href="delete.php?profile_id=' . $profile['profile_id'] . '"> Delete </a> | <a href="edit.php?profile_id=' .
             $profile['profile_id'] . '"> Edit </a>' . '</td>';
         array_push($profiles_table, [$tdName, $tdHeadline, $tdAction]);
     }

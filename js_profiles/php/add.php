@@ -6,7 +6,7 @@ if (!isset($_SESSION['name'])) {
 }
 
 require './DB.php';
-$db = new DB();
+$db = new DB($_SESSION['pass']);
 $pdo = $db->getPDO();
 
 if (isset($_POST['first_name']) && isset($_POST['last_name']) && isset($_POST['email'])
@@ -20,6 +20,7 @@ if (isset($_POST['first_name']) && isset($_POST['last_name']) && isset($_POST['e
     else {
         $stmt = $pdo->prepare('INSERT INTO Profile (user_id,first_name, last_name, email, headline, summary)
             VALUES (:user_id, :first_name, :last_name, :email, :headline,:summary)');
+        
         $stmt->execute(array(
                 ':user_id' => $_SESSION['user_id'],
                 ':first_name' => $_POST['first_name'],

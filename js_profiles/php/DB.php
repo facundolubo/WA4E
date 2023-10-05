@@ -19,7 +19,7 @@ class DB extends PDO {
                 \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC
             ];
             $this->conn = new \PDO($this->dsn, $this->username, $this->password, $this->options);
-            echo "Connected successfully";
+            echo "Connected successfully to database";
         } 
         catch (PDOException $e) {
             throw new \PDOException($e->getMessage(), (int)$e->getCode());
