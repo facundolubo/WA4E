@@ -6,14 +6,14 @@ if (!isset($_SESSION['name'])) {
 }
 
 require './DB.php';
-$db = new DB($_SESSION['pass']);
+$db = new DB();
 $pdo = $db->getPDO();
 
 if (isset($_POST['first_name']) && isset($_POST['last_name']) && isset($_POST['email'])
     && isset($_POST['headline']) && isset($_POST['summary'])) {
     if (strlen($_POST['first_name']) < 1 || strlen($_POST['last_name']) < 1 || strlen($_POST['email']) < 1 ||
         strlen($_POST['headline']) < 1 || strlen($_POST['summary']) < 1) {
-        $_SESSION['error'] = 'All values are required';
+        $_SESSION['error'] = 'All fields are required';
         header("Location: add.php");
         return;
     } 
@@ -29,14 +29,14 @@ if (isset($_POST['first_name']) && isset($_POST['last_name']) && isset($_POST['e
                 ':headline' => $_POST['headline'],
                 ':summary' => $_POST['summary'])
         );
-        $_SESSION['success'] = "Record added.";
+        $_SESSION['success'] = "added";
         header("Location: index.php");
         return;
     }
 
 }
 
-else $_SESSION['fail']="All values are required";
+else $_SESSION['fail']="All fields are required";
 
 ?>
 
@@ -63,7 +63,7 @@ else $_SESSION['fail']="All values are required";
         <p>Email: <input type="text" name="email" /><br/></p>
         <p>Headline: <input type="text" name="headline" /><br/></p>
         <p>Summary: <input type="text" name="summary" /><br/></p>
-        <input type="submit" value="Submit">
+        <input name="Add" type="submit" value="Submit">
     </form>
     </div>
 </body>

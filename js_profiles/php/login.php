@@ -10,7 +10,7 @@ session_start();
 if (isset($_POST['email']) && isset($_POST['pass'])) { 
     require './DB.php';
     $salt = 'XyZzy12*_';
-    $db = new DB($_SESSION['pass']);
+    $db = new DB();
     $pdo = $db->getPDO();
     
     $check = hash('md5', $salt.$_POST['pass']);

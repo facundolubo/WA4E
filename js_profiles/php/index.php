@@ -20,12 +20,12 @@ and then I've reload it with: systemctl restart php8.1-fpm.service
 
 */
 session_start();
-$_SESSION['pass'] = file_get_contents('../sql/mysql_dumb_passwords');
+$_SESSION['pass'] = file_get_contents('../.sql/mysql_dumb_passwords');
 if (isset($_SESSION['name'])) {
     echo 'Welcome, ' . $_SESSION['name'] . '! <br />';
 }
 require 'DB.php';
-$db = new DB($_SESSION['pass']);
+$db = new DB();
 $pdo = $db->getPDO();
 $stmt = $pdo->prepare('SELECT * FROM Profile');
 $stmt->execute();
@@ -52,15 +52,18 @@ foreach ($profiles as $profile) {
 
 // Check if the user is logged in
 if (isset($_SESSION['user_id'])) {
-    $addLink = '<a href="add.php"> Add new entry </a>';
+    $addLink = '<a href="add.php"> Add New Entry </a>';
 }
-
+if (isset($_SESSION['success'])) {
+    echo '<p style="color: green;">' . $_SESSION['success'] . "</p>";
+    unset($_SESSION['success']);
+}
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-<title>Facundo Lubo's Resume Registry</title>
+<title> Facundo Lubo Resume Registry</title>
 <!-- bootstrap.php - this is HTML -->
 
 <!-- Latest compiled and minified CSS -->
@@ -79,8 +82,8 @@ if (isset($_SESSION['user_id'])) {
 <body>
 <div class="container">
 <h1> Facundo Lubo's Resume Registry</h1>
-<button type="button" onclick="window.location='login.php'">Login</button>
-<button type="button" onclick="window.location='logout.php'">Logout</button>
+<a href="login.php">Please log in</a>
+<a href='logout.php'>Logout</a>
 <table border="1">
     <tr>
         <th>Name</th>

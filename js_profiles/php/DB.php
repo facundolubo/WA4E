@@ -4,16 +4,15 @@ class DB extends PDO {
     #cambié el nombre a js_profiles porque me daba errores...
     private $dsn = 'mysql:host=localhost;dbname=js_profiles';
     private $username = 'fred';
-    private $password;
+    private $password = 'zap';
     #private $dbname = 'js_profiles';
     #private $host = 'localhost';
     private $options;
     private $conn;
     
-    public function __construct($password)
+    public function __construct()
     {
         try {
-            $this->password = $password;
             $this->options = [
                 \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
                 \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC
