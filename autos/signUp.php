@@ -1,6 +1,7 @@
 <?php 
-include_once('conn.php');
-session_start();
+require './conn.php';
+$db = new DB();
+$pdo = $db->getPDO();session_start();
 //if cancel, then go to index.php
 if (isset($_POST['cancel'])) {
     header("Location: index.php");

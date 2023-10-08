@@ -1,6 +1,8 @@
 <?php
 session_start();
-include_once('conn.php');
+require './conn.php';
+$db = new DB();
+$pdo = $db->getPDO();
 
 if (!isset($_GET['name'])) {
 	die("Name parameter missing");
@@ -25,7 +27,7 @@ if (isset($_POST['add'])) {
 ?>
 <html>
 <head>
-<title> Facundo Lubo's Sign In Page</title>
+<title> Facundo Lubo's Autos Page</title>
 <style>
     body form label {
         display: block;
@@ -43,17 +45,6 @@ if (isset($_POST['add'])) {
         unset($_SESSION['new_car']);
     }
     ?>
-<form method="POST">
-<label for="make">Make</label>
-<input type="text" name="make">
-<label for="year">Year</label>
-<input type="text" name="year">
-<label for="mileage">Mileage</label>
-<input type="text" name="mileage">
-<br>
-<input type="submit" name="add" value="Add">
-<input type="submit" name="logout" value="Logout">
-</form>
 <table>
     <h1>Automobiles</h1>
     <thead>
@@ -78,5 +69,4 @@ if (isset($_POST['add'])) {
     </tbody>
 </table>
 </body>
->>>>>>> b00ed53dd47b97e15f6b39cf1a4e0e9141f8c62d
 </html>

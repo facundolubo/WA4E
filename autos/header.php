@@ -41,5 +41,4 @@ nav a h1 {
         <a class="login-button" href="signUp.php">Sign in</a>
         </nav>
         </div>
->>>>>>> b00ed53dd47b97e15f6b39cf1a4e0e9141f8c62d
     </header>

@@ -26,5 +26,4 @@ data on logout - which you should not do in your implementation.
 </p>
 </div>
 </main>
->>>>>>> b00ed53dd47b97e15f6b39cf1a4e0e9141f8c62d
 </body>
