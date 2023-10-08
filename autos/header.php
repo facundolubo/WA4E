@@ -38,7 +38,8 @@ nav a h1 {
             <h1> Welcome to Facundo Lubo Auto's page</h1>
         </a>
         <a class="login-button" href="login.php">Please Log In</a>
-        <a class="login-button" href="signUp.php">Sign in</a>
+        <a class="login-button" href="logout.php">Logout</a>
+        <a class="login-button" href="signIn.php">Sign in</a>
         </nav>
         </div>
     </header>

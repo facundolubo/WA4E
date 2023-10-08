@@ -4,9 +4,13 @@ require './conn.php';
 $db = new DB();
 $pdo = $db->getPDO();
 
+if (!isset($_SESSION['email'])) {
+    die('Not logged in');
+}
 if (!isset($_GET['name'])) {
 	die("Name parameter missing");
 }
+
 if (isset($_POST['logout'])) {
     session_destroy();
     header("Location: index.php");
@@ -68,5 +72,7 @@ if (isset($_POST['add'])) {
         ?>
     </tbody>
 </table>
+<a href="add.php">Add New</a>
+<a href="logout.php">Logout</a>
 </body>
 </html>
