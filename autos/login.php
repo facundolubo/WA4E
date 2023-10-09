@@ -18,10 +18,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	// Example: Check if the email and password fields are not empty
 	if (empty($email) || empty($password)) {
 		// Display an error message or redirect back to the login page
-		$error = "Please enter both email and password";
+		$_SESSION['error'] = "Please enter both email and password";
 	}
 	else if (!str_contains($email , "@")) {
-		$error = "Invalid email characters (without @)";
+		$_SESSION['error'] = "Invalid email characters (without @)";
 	}
 	else {
 		try {
@@ -36,13 +36,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		$result = $stmt->fetch(PDO::FETCH_ASSOC);
 		//echo "<br/>" . "Result: " . print_r($result, true) . "<br/>";
 		if (empty($result['email'])) {
-			$error = "Inexisting email: " . $email . "<br/>" ; 
+			$_SESSION['error'] = "Inexisting email: " . $email . "<br/>" ; 
 		}
 		else if (hash('md5', $salt . $password) !== $result['password']) {
-			$error = "Incorrect password " . $salt . $password . " for " . $email . "Hash: " . $result['password'];
+			$_SESSION['error'] = "Incorrect password  for " . $email . "<br/>" ;
 		}
 		else {
 			$_SESSION['email'] = $email;
+			$_SESSION['success'] = "You are now logged in";
             header("Location: autos.php?name=".urlencode($_POST['email']));
 		}
 	}
@@ -72,8 +73,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div class="container">
 <h1>Please Log In</h1>
 <?php
-if (isset($error)) {
-	echo "<p class='error'>" . $error . "</p>";
+if (isset($_SESSION['error'])) {
+	echo "<p class='error'>" . $_SESSION['error'] . "</p>";
+	unset($_SESSION['error']);
+}
+if (isset($_SESSION['success'])) {
+	echo "<p class='success'>" . $_SESSION['success'] . "</p>";
 }
 ?>
 <form method="POST">

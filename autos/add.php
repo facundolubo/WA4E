@@ -17,8 +17,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             return;
         }
         else if (isset($_POST['Add'])) {
+            if (!isset($_POST['make']) || $_POST['make'] == '' || !isset($_POST['model']) || $_POST['model'] == '' || !isset($_POST['year']) || $_POST['year'] == '' || !isset($_POST['mileage']) || $_POST['mileage'] == '') {
+                $_SESSION['error'] = "All fields are required";
+                header("Location: add.php");
+                return;
+            }                
+            } 
             if (!isset($_POST['make']) || $_POST['make'] == '') {
                 $_SESSION['error'] = "Make is required";
+                header("Location: add.php");
+                return;
+            }
+            if (!isset($_POST['model']) || $_POST['model'] == '') {
+                $_SESSION['error'] = "Model is required";
                 header("Location: add.php");
                 return;
             }
@@ -38,9 +49,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 header("Location: add.php");
                 return;
             }
-            $query = 'INSERT INTO autos (make, year, mileage) VALUES (:make, :year, :mileage)';
+            $query = 'INSERT INTO autos (model, make, year, mileage) VALUES (:model, :make, :year, :mileage)';
             $stmt = $pdo->prepare($query);
             $stmt->execute(array(
+                ':model' => htmlentities($_POST['model']),
                 ':make' => htmlentities($_POST['make']),
                 ':year' => htmlentities($_POST['year']),
                 ':mileage' => htmlentities($_POST['mileage'])
@@ -87,6 +99,8 @@ if (isset($_SESSION['success'])) {
 }
 ?>
 <form method="POST" action="add.php" >
+<label for="model">Model</label>
+<input type="text" name="model">
 <label for="make">Make</label>
 <input type="text" name="make">
 <label for="year">Year</label>

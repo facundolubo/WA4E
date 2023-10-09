@@ -42,6 +42,16 @@ if (isset($_POST['add'])) {
 </style>
 </head>
 <body>
+<?php
+    if (isset($_SESSION['success'])) {
+        echo "<p style=\"color: green\">" . $_SESSION['success'] . "</p>";
+        unset($_SESSION['success']);
+    }
+    if (isset($_SESSION['error'])) {
+        echo "<p style=\"color: red\">" . $_SESSION['error'] . "</p>";
+        unset($_SESSION['error']);
+    }
+?>
     <h1> Tracking Autos for <?php echo $_GET['name']; ?></h1>
     <?php
     if (isset($_SESSION['new_car'])) {
@@ -53,6 +63,7 @@ if (isset($_POST['add'])) {
     <h1>Automobiles</h1>
     <thead>
         <tr>
+            <th>Model</th>
             <th>Make</th>
             <th>Year</th>
             <th>Mileage</th>
@@ -64,6 +75,7 @@ if (isset($_POST['add'])) {
         $stmt->execute();
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             echo "<tr>";
+            echo "<td>" . $row['model'] . "</td>";
             echo "<td>" . $row['make'] . "</td>";
             echo "<td>" . $row['year'] . "</td>";
             echo "<td>" . $row['mileage'] . "</td>";
@@ -72,7 +84,7 @@ if (isset($_POST['add'])) {
         ?>
     </tbody>
 </table>
-<a href="add.php">Add New</a>
+<a href="add.php">Add New Entry</a>
 <a href="logout.php">Logout</a>
 </body>
 </html>
