@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 header("Location: add.php");
                 return;
             }                
-            } 
+            
             if (!isset($_POST['make']) || $_POST['make'] == '') {
                 $_SESSION['error'] = "Make is required";
                 header("Location: add.php");
@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ':year' => htmlentities($_POST['year']),
                 ':mileage' => htmlentities($_POST['mileage'])
             ));
-            $_SESSION['success'] = "Record inserted";
+            $_SESSION['success'] = "added";
             header("Location: autos.php?name=".urlencode($_SESSION['email']));
             return;
         }
