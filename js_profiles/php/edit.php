@@ -36,6 +36,7 @@ if (isset($_POST['first_name']) && isset($_POST['last_name']) && isset($_POST['e
         header("Location: edit.php?profile_id=" . urlencode($_SESSION['profile_id']));
         return;
     }
+    
     /* FORM TO UPDATE A PROFILE */
    
     else {
