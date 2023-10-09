@@ -7,9 +7,6 @@ $pdo = $db->getPDO();
 if (!isset($_SESSION['email'])) {
     die('Not logged in');
 }
-if (!isset($_GET['name'])) {
-	die("Name parameter missing");
-}
 
 if (isset($_POST['logout'])) {
     session_destroy();
@@ -52,7 +49,7 @@ if (isset($_POST['add'])) {
         unset($_SESSION['error']);
     }
 ?>
-    <h1> Tracking Autos for <?php echo $_GET['name']; ?></h1>
+    <h1> Tracking Autos for <?php echo $_SESSION['email']; ?></h1>
     <?php
     if (isset($_SESSION['new_car'])) {
         echo "<p style=\"color: green\">Record inserted: " . $_SESSION['new_car'] . "</p>";
@@ -67,6 +64,7 @@ if (isset($_POST['add'])) {
             <th>Make</th>
             <th>Year</th>
             <th>Mileage</th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
@@ -79,8 +77,9 @@ if (isset($_POST['add'])) {
             echo "<td>" . $row['make'] . "</td>";
             echo "<td>" . $row['year'] . "</td>";
             echo "<td>" . $row['mileage'] . "</td>";
-            echo "</tr>";
-        }
+            echo '<td> <a href="delete.php?id=' . urlencode($row['id']) . '"> Delete </a> | <a href="edit.php?id=' . 
+                urlencode($row['id']) . '"> Edit </a>' . '</td>';
+            echo "</tr>";}
         ?>
     </tbody>
 </table>
